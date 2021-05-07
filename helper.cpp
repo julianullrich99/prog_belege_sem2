@@ -29,6 +29,21 @@ void Helper::log(QString data) {
   Helper::logString(Helper::toString(data));
 }
 
+void Helper::debug(string data) {
+  if (Helper::isDebugEnabled())
+  Helper::logString(data);
+};
+
+void Helper::debug(char* data) {
+  if (Helper::isDebugEnabled())
+  Helper::logString(data);
+};
+
+void Helper::debug(QString data) {
+  if (Helper::isDebugEnabled())
+  Helper::logString(Helper::toString(data));
+}
+
 string Helper::toString(QString str) {
   return str.toStdString();
 }
@@ -39,4 +54,12 @@ void Helper::enableLogging(bool arg) {
 
 bool Helper::isLoggingEnabled() {
   return Helper::getInstance()->loggingEnabled;
+}
+
+void Helper::enableDebug(bool arg) {
+  Helper::getInstance()->loggingEnabled = arg;
+}
+
+bool Helper::isDebugEnabled() {
+  return Helper::getInstance()->debugEnabled;
 }

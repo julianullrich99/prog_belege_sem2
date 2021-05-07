@@ -1,3 +1,6 @@
+#ifndef HELPER_H
+#define HELPER_H
+
 #include <stdlib.h>
 #include <string>
 #include <QWidget>
@@ -11,16 +14,25 @@ class Helper {
     static void enableLogging(bool);
     static bool isLoggingEnabled();
 
+    static void enableDebug(bool);
+    static bool isDebugEnabled();
+
     static void log(string);
     static void log(QString);
     static void log(char*);
+    static void debug(string);
+    static void debug(QString);
+    static void debug(char*);
     static string toString(QString);
 
 
   private:
     bool loggingEnabled = false;
+    bool debugEnabled = false;
     static void logString(string);
     static Helper *getInstance();
     static Helper *instance;
     Helper(){};
 };
+
+#endif

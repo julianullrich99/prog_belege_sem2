@@ -1,15 +1,17 @@
+#ifndef GAME_H
+#define GAME_H
+
 #include <stdlib.h>
 #include <string>
 using namespace std;
 
 #include "gamefield.h"
+#include "gamestate.h"
 
-enum gameState {
-  GAME_IDLE, // in menu, doing nothing
-  GAME_RUNNING, // running simulation
-  GAME_STOPPED, // simulation stopped (via user or automatically)
-  GAME_PREPARED, // startState loaded, ready to start
-};
+#include "window.h"
+
+class Window;
+class Gamefield;
 
 class Game {
   public:
@@ -19,10 +21,18 @@ class Game {
     void loadFromFile(char*);
     void saveToFile(char*);
     gameState getCurrentState();
-    void generateGameField(int, int);
+    void generateGameField(int sizeX, int sizeY, int fill);
+
+    void setWindow(Window*);
+    void showControls();
 
   private:
+    void setState(gameState);
     gameState currentState;
+    Window *controlWindow;
+    Gamefield *gamefield;
 
 
 };
+
+#endif

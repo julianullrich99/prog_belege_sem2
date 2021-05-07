@@ -283,7 +283,8 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		main.pro window.h \
 		helper.h \
 		game.h \
-		gamefield.h main.cpp \
+		gamefield.h \
+		gamestate.h main.cpp \
 		window.cpp \
 		helper.cpp \
 		game.cpp \
@@ -751,7 +752,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents window.h helper.h game.h gamefield.h $(DISTDIR)/
+	$(COPY_FILE) --parents window.h helper.h game.h gamefield.h gamestate.h $(DISTDIR)/
 	$(COPY_FILE) --parents main.cpp window.cpp helper.cpp game.cpp gamefield.cpp $(DISTDIR)/
 
 
@@ -788,6 +789,11 @@ compiler_moc_header_make_all: moc_window.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_window.cpp
 moc_window.cpp: window.h \
+		gamestate.h \
+		game.h \
+		gamefield.h \
+		helper.h \
+		window.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /run/media/jukisu/Data/STUDIUM/SEM2/Progra/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/run/media/jukisu/Data/STUDIUM/SEM2/Progra -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include window.h -o moc_window.cpp
@@ -808,13 +814,17 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 ####### Compile
 
-main.o: main.cpp window.h \
-		helper.h \
+main.o: main.cpp helper.h \
 		game.h \
-		gamefield.h
+		gamefield.h \
+		gamestate.h \
+		window.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 window.o: window.cpp window.h \
+		gamestate.h \
+		game.h \
+		gamefield.h \
 		helper.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o window.o window.cpp
 
@@ -823,7 +833,9 @@ helper.o: helper.cpp helper.h
 
 game.o: game.cpp game.h \
 		gamefield.h \
-		helper.h
+		helper.h \
+		gamestate.h \
+		window.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o game.o game.cpp
 
 gamefield.o: gamefield.cpp gamefield.h \

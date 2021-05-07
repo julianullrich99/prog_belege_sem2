@@ -1,9 +1,15 @@
+#ifndef WINDOW_H
+#define WINDOW_H
+
 #include <QWidget>
+#include "gamestate.h"
+#include "game.h"
 
 class QLabel;
 class QPushButton;
 class QLineEdit;
 class QSlider;
+class Game;
 
 class Window : public QWidget {
     Q_OBJECT
@@ -11,15 +17,19 @@ class Window : public QWidget {
     public: 
         Window();
         virtual ~Window() {};
+        void changeGameStateDisplay(gameState);
+        void setGameContainer(Game*);
+        Game* getGameContainer();
     
     private slots:
         void userEvent();
-        void gameStateChangedEvent();
         void generateGameFieldEvent();
         void sliderChangedHandler();
 
     private:
-        QLabel *testLabel;
+        Game *gameContainer;
+
+        QLabel *statusLabel;
 
         QPushButton *generateGamefieldButton;
         QPushButton *randomizeGamefieldButton;
@@ -35,7 +45,9 @@ class Window : public QWidget {
 
         QLabel *gamefieldFillPercentageLabel;
         QSlider *gamefieldFillPercentageSlider;
+
+
     
 };
 
-
+#endif

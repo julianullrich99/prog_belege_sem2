@@ -3,5 +3,5 @@ CONFIG += no_batch
 
 QT += gui widgets
 
-HEADERS += window.h helper.h game.h gamefield.h
+HEADERS += window.h helper.h game.h gamefield.h gamestate.h
 SOURCES += main.cpp window.cpp helper.cpp game.cpp gamefield.cpp
