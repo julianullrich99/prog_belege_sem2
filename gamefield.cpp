@@ -1,12 +1,4 @@
 #include "gamefield.h"
-#include "helper.h"
-
-#include <stdlib.h>
-#include <cstdlib>
-#include <time.h>
-#include <ctime>
-#include <string>
-#include <iostream>
 
 using namespace std;
 

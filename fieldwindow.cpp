@@ -1,9 +1,5 @@
 #include "fieldwindow.h"
 
-#include <stdlib.h>
-#include <string>
-#include <iostream>
-
 using namespace std;
 
 Fieldwindow::Fieldwindow(Gamefield *gamefieldContainer) {

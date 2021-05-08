@@ -1,12 +1,4 @@
 #include "game.h"
-#include "helper.h"
-// #include "window.h"
-
-#include <stdlib.h>
-#include <string>
-#include <iostream>
-
-#include <QObject>
 
 using namespace std;
 

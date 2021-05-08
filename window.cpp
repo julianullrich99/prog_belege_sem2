@@ -1,10 +1,4 @@
 #include "window.h"
-#include "helper.h"
-
-#include <stdlib.h>
-#include <iostream>
-
-#include <QtWidgets>
 
 Window::Window() {
   gameContainer = 0;
@@ -264,5 +258,6 @@ Game *Window::getGameContainer() {
 
 void Window::closeEvent(QCloseEvent *event) {
   Helper::log("Closed MainWindow");
+  if (gameContainer->getFieldwindow())
   gameContainer->getFieldwindow()->close();
 }

@@ -4,6 +4,11 @@
 #include <QWidget>
 #include "gamestate.h"
 #include "game.h"
+#include "helper.h"
+#include <stdlib.h>
+#include <iostream>
+
+#include <QtWidgets>
 
 class QLabel;
 class QPushButton;

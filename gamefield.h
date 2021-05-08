@@ -3,7 +3,9 @@
 
 #include <stdlib.h>
 #include <string>
+#include <iostream>
 #include <QWidget>
+#include <time.h>
 #include "helper.h"
 #include "cellstate.h"
 #include "gamestate.h"

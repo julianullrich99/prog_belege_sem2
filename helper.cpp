@@ -1,9 +1,5 @@
 #include "helper.h"
 
-#include <stdlib.h>
-#include <string>
-#include <iostream>
-
 using namespace std;
 
 void Helper::logString(string data){

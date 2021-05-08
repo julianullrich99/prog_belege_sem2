@@ -1,10 +1,5 @@
 #include "renderarea.h"
 
-#include <stdlib.h>
-#include <string>
-#include <iostream>
-#include <QtWidgets>
-
 using namespace std;
 
 Renderarea::Renderarea(QWidget *parent, Fieldwindow *fieldwindow) {

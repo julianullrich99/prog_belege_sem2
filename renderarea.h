@@ -2,6 +2,10 @@
 #define RENDERAREA_H
 
 #include <QWidget>
+#include <stdlib.h>
+#include <string>
+#include <iostream>
+#include <QtWidgets>
 
 #include "cellstate.h"
 #include "fieldwindow.h"

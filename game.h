@@ -3,11 +3,13 @@
 
 #include <stdlib.h>
 #include <string>
+#include <iostream>
 #include <QtConcurrent>
 #include <QObject>
 #include <QDialog>
 using namespace std;
 
+#include "helper.h"
 #include "gamefield.h"
 #include "gamestate.h"
 #include "fieldwindow.h"

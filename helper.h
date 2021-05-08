@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <string>
+#include <iostream>
 #include <QWidget>
 #include <QErrorMessage>
 #include <QMessageBox>

@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <QtWidgets>
 
-// #include "window.h"
 #include "helper.h"
 #include "game.h"
 
@@ -17,13 +16,9 @@ int main(int argc, char **argv) {
 
     QApplication app(argc, argv);
 
-    // Window window;
     Game game;
 
     game.showControls();
-
-    // game.setWindow(&window);
-    // window.setGame(&game);
 
     return app.exec();
 };
