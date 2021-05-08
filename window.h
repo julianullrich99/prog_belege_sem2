@@ -21,6 +21,7 @@ public:
   void setGameContainer(Game *);
   Game *getGameContainer();
   void setInputLabelsAfterFileLoad(int height, int width, int fill);
+  void closeEvent(QCloseEvent *);
 
 private slots:
   void userEvent();

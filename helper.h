@@ -5,6 +5,7 @@
 #include <string>
 #include <QWidget>
 #include <QErrorMessage>
+#include <QMessageBox>
 #include "cellstate.h"
 
 using namespace std;
@@ -28,7 +29,9 @@ class Helper {
     static void debug(char*);
     static void debug(const char*);
     static string toString(QString);
+
     static void errorDialog(string);
+    static void message(string);
 
     static string formatCellOutput(cellState);
 

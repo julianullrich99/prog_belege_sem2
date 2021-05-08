@@ -119,7 +119,6 @@ void Window::editGamefieldTriggerEvent() {
 
 void Window::loadFileEvent() {
   Helper::log("Load file Event");
-  Helper::errorDialog("foobar");
   gameContainer->loadFromFile();
 }
 
@@ -261,4 +260,9 @@ void Window::setGameContainer(Game *game) {
 
 Game *Window::getGameContainer() {
   return gameContainer;
+}
+
+void Window::closeEvent(QCloseEvent *event) {
+  Helper::log("Closed MainWindow");
+  gameContainer->getFieldwindow()->close();
 }

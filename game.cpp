@@ -152,6 +152,7 @@ void Game::saveToFile() {
 
   if (filename.length()) {
     if (!fileservice->writeGenerationToFile(filename)) Helper::errorDialog("Error saving file.");
+    else Helper::message("Success!");
   } else Helper::errorDialog("No file selected.");
 }
 
