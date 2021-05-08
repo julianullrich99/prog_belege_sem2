@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/lib/qt/mkspecs/linux-g++
+INCPATH       = -I. -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtConcurrent -I/usr/include/qt/QtCore -I. -I/usr/lib/qt/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = main1.0.0
 DISTDIR = /run/media/jukisu/Data/STUDIUM/SEM2/Progra/.tmp/main1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
-LIBS          = $(SUBLIBS) /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Core.so -lGL -lpthread   
+LIBS          = $(SUBLIBS) /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Concurrent.so /usr/lib/libQt5Core.so -lGL -lpthread   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -284,7 +284,8 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		helper.h \
 		game.h \
 		gamefield.h \
-		gamestate.h main.cpp \
+		gamestate.h \
+		cellstate.h main.cpp \
 		window.cpp \
 		helper.cpp \
 		game.cpp \
@@ -752,7 +753,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents window.h helper.h game.h gamefield.h gamestate.h $(DISTDIR)/
+	$(COPY_FILE) --parents window.h helper.h game.h gamefield.h gamestate.h cellstate.h $(DISTDIR)/
 	$(COPY_FILE) --parents main.cpp window.cpp helper.cpp game.cpp gamefield.cpp $(DISTDIR)/
 
 
@@ -793,10 +794,11 @@ moc_window.cpp: window.h \
 		game.h \
 		gamefield.h \
 		helper.h \
+		cellstate.h \
 		window.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /run/media/jukisu/Data/STUDIUM/SEM2/Progra/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/run/media/jukisu/Data/STUDIUM/SEM2/Progra -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include window.h -o moc_window.cpp
+	/usr/bin/moc $(DEFINES) --include /run/media/jukisu/Data/STUDIUM/SEM2/Progra/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/run/media/jukisu/Data/STUDIUM/SEM2/Progra -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtConcurrent -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include window.h -o moc_window.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -815,6 +817,7 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 ####### Compile
 
 main.o: main.cpp helper.h \
+		cellstate.h \
 		game.h \
 		gamefield.h \
 		gamestate.h \
@@ -825,21 +828,28 @@ window.o: window.cpp window.h \
 		gamestate.h \
 		game.h \
 		gamefield.h \
-		helper.h
+		helper.h \
+		cellstate.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o window.o window.cpp
 
-helper.o: helper.cpp helper.h
+helper.o: helper.cpp helper.h \
+		cellstate.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o helper.o helper.cpp
 
 game.o: game.cpp game.h \
 		gamefield.h \
 		helper.h \
+		cellstate.h \
 		gamestate.h \
 		window.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o game.o game.cpp
 
 gamefield.o: gamefield.cpp gamefield.h \
-		helper.h
+		helper.h \
+		cellstate.h \
+		gamestate.h \
+		game.h \
+		window.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gamefield.o gamefield.cpp
 
 moc_window.o: moc_window.cpp 

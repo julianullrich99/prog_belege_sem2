@@ -2,13 +2,17 @@
 #include "helper.h"
 
 #include <stdlib.h>
+#include <cstdlib>
 #include <time.h>
+#include <ctime>
 #include <string>
 #include <iostream>
 
 using namespace std;
 
 Gamefield::Gamefield(int sizeX, int sizeY) {
+  gameContainer = 0;
+
   setGamefieldSize(sizeX, sizeY);
   currentGenerationNumber = 0;
 
@@ -37,9 +41,10 @@ void Gamefield::deleteGamefield() {
 void Gamefield::populateGamefield(int fill, generation target = GENERATION_NEXT) {
   Helper::log("Populating gamefield");
 
-  srand(time(NULL));
 
-  Helper::debug("foo");
+  cleanGamefield(CELL_DEAD, GENERATION_CURRENT);
+
+  srand(time(0));
 
   const int cellsToPopulate = sizeX * sizeY * fill / 100;
   int cellsCurrentlyPopulated = 0;
@@ -50,21 +55,27 @@ void Gamefield::populateGamefield(int fill, generation target = GENERATION_NEXT)
 
   while (cellsCurrentlyPopulated < cellsToPopulate) {
     const int offset = rand() % maxOffset;
+    Helper::debug("offset " + to_string(offset));
 
     cellState currentStatus = getCellStateByOffset(offset, target);
+    Helper::debug("currentState" + Helper::formatCellOutput(currentStatus));
 
     if (currentStatus == CELL_DEAD) {
       setCellStateByOffset(offset, CELL_ALIVE, target);
       cellsCurrentlyPopulated++;
     }
   }
+
+  this->getGameContainer()->setState(GAME_PREPARED);
+
+  Helper::log("Done generating field");
 };
 
 void Gamefield::printGamefieldToConsole(generation target = GENERATION_CURRENT) {
   for (int i = 0; i < sizeX; i++) {
     string line = "";
     for (int j = 0; j < sizeY; j++)
-      line += to_string(getCellState(i, j, target));
+      line += Helper::formatCellOutput(getCellState(i, j, target));
     Helper::log(line);
   }
 };
@@ -109,4 +120,12 @@ void Gamefield::setCellStateByOffset(int offset, cellState state, generation tar
     *(currentGeneration + offset) = state;
   else
     *(nextGeneration + offset) = state;
+}
+
+void Gamefield::setGameContainer(Game *game) {
+  gameContainer = game;
+}
+
+Game* Gamefield::getGameContainer() {
+  return gameContainer;
 }

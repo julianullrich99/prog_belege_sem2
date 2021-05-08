@@ -40,9 +40,8 @@ void Game::generateGameField(int sizeX, int sizeY, int fill) {
   if (gamefield) gamefield->deleteGamefield();
 
   gamefield = new Gamefield(sizeX, sizeY);
-  gamefield->populateGamefield(fill, GENERATION_CURRENT);
+  gamefield->setGameContainer(this);
 
-  gamefield->printGamefieldToConsole(GENERATION_CURRENT);
-
-  this->setState(GAME_PREPARED);
+  this->setState(GAME_GENERATING);
+  QtConcurrent::run(gamefield, &Gamefield::populateGamefield, fill, GENERATION_CURRENT); //could take a while, set status and catch UI events inside
 }

@@ -11,43 +11,42 @@ class QLineEdit;
 class QSlider;
 class Game;
 
-class Window : public QWidget {
-    Q_OBJECT
+class Window : public QWidget
+{
+  Q_OBJECT
 
-    public: 
-        Window();
-        virtual ~Window() {};
-        void changeGameStateDisplay(gameState);
-        void setGameContainer(Game*);
-        Game* getGameContainer();
-    
-    private slots:
-        void userEvent();
-        void generateGameFieldEvent();
-        void sliderChangedHandler();
+public:
+  Window();
+  virtual ~Window(){};
+  void changeGameStateDisplay(gameState);
+  void setGameContainer(Game *);
+  Game *getGameContainer();
 
-    private:
-        Game *gameContainer;
+private slots:
+  void userEvent();
+  void generateGameFieldEvent();
+  void sliderChangedHandler();
 
-        QLabel *statusLabel;
+private:
+  Game *gameContainer;
 
-        QPushButton *generateGamefieldButton;
-        QPushButton *randomizeGamefieldButton;
-        QPushButton *closeGamefieldButton;
-        QPushButton *startSimulationButton;
-        QPushButton *pauseSimulationButton;
-        QPushButton *stepNextGenerationButton;
+  QLabel *statusLabel;
 
-        QLabel *gamefieldSizeXLabel;
-        QLabel *gamefieldSizeYLabel;
-        QLineEdit *gamefieldSizeXInput;
-        QLineEdit *gamefieldSizeYInput;
+  QPushButton *generateGamefieldButton;
+  QPushButton *closeGamefieldButton;
+  QPushButton *startSimulationButton;
+  QPushButton *pauseSimulationButton;
+  QPushButton *stepNextGenerationButton;
 
-        QLabel *gamefieldFillPercentageLabel;
-        QSlider *gamefieldFillPercentageSlider;
+  QLabel *gamefieldSizeXLabel;
+  QLabel *gamefieldSizeYLabel;
+  QLineEdit *gamefieldSizeXInput;
+  QLineEdit *gamefieldSizeYInput;
 
+  QLabel *gamefieldFillPercentageLabel;
+  QSlider *gamefieldFillPercentageSlider;
 
-    
+  void enableGamefieldControls(gameState);
 };
 
 #endif

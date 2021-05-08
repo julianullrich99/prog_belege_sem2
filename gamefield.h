@@ -3,20 +3,15 @@
 
 #include <stdlib.h>
 #include <string>
+#include <QWidget>
 #include "helper.h"
+#include "cellstate.h"
+#include "gamestate.h"
+#include "game.h"
+
+class Game;
 
 using namespace std;
-
-enum cellState {
-  CELL_ALIVE,
-  CELL_DEAD,
-  CELL_ERROR
-};
-
-enum generation {
-  GENERATION_CURRENT,
-  GENERATION_NEXT
-};
 
 class Gamefield {
   public:
@@ -30,10 +25,13 @@ class Gamefield {
     void populateGamefield(int fill, generation);
     void printGamefieldToConsole(generation);
     void cleanGamefield(cellState targetState, generation targetGeneration);
+    void setGameContainer(Game *);
+    Game* getGameContainer();
 
   private:
     cellState* currentGeneration = nullptr;
     cellState* nextGeneration = nullptr;
+    Game *gameContainer;
     int currentGenerationNumber;
     int sizeX;
     int sizeY;

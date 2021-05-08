@@ -7,6 +7,8 @@
 #include <QtWidgets>
 
 Window::Window() {
+    gameContainer = 0;
+
     QGridLayout *mainLayout = new QGridLayout;
 
     QLabel* titleLabel = new QLabel("Spiel des Lebens");
@@ -15,15 +17,13 @@ Window::Window() {
     statusLabel = new QLabel("");
     mainLayout->addWidget(statusLabel, 0, 2);
 
-    generateGamefieldButton = new QPushButton("generate");
-    randomizeGamefieldButton = new QPushButton("randomize");
+    generateGamefieldButton = new QPushButton("generate random");
     closeGamefieldButton = new QPushButton("close gamefield");
     startSimulationButton = new QPushButton("start simulation");
     pauseSimulationButton = new QPushButton("pause simulation");
     stepNextGenerationButton = new QPushButton("step simulation");
 
     mainLayout->addWidget(generateGamefieldButton, 1, 2);
-    mainLayout->addWidget(randomizeGamefieldButton, 2, 2);
     mainLayout->addWidget(closeGamefieldButton, 3, 2);
     mainLayout->addWidget(startSimulationButton, 4, 2);
     mainLayout->addWidget(pauseSimulationButton, 5, 2);
@@ -54,7 +54,6 @@ Window::Window() {
     setWindowTitle("Spiel des Lebens oder so");
 };
 
-
 void Window::userEvent() {
   Helper::log("userEvent triggered");
 };
@@ -74,6 +73,51 @@ void Window::sliderChangedHandler() {
   gamefieldFillPercentageLabel->setText(stringVal);
 }
 
+void Window::enableGamefieldControls(gameState state) {
+  switch (state) {
+    case GAME_PREPARED:
+      this->generateGamefieldButton->setEnabled(true);
+      this->startSimulationButton->setEnabled(true);
+      this->stepNextGenerationButton->setEnabled(true);
+      this->closeGamefieldButton->setEnabled(false);
+      this->pauseSimulationButton->setEnabled(false);
+      this->gamefieldSizeXInput->setEnabled(true);
+      this->gamefieldSizeYInput->setEnabled(true);
+      this->gamefieldFillPercentageSlider->setEnabled(true);
+      break;
+    case GAME_IDLE:
+      this->generateGamefieldButton->setEnabled(true);
+      this->startSimulationButton->setEnabled(false);
+      this->stepNextGenerationButton->setEnabled(false);
+      this->closeGamefieldButton->setEnabled(false);
+      this->pauseSimulationButton->setEnabled(false);
+      this->gamefieldSizeXInput->setEnabled(true);
+      this->gamefieldSizeYInput->setEnabled(true);
+      this->gamefieldFillPercentageSlider->setEnabled(true);
+      break;
+    case GAME_RUNNING:
+      this->generateGamefieldButton->setEnabled(false);
+      this->startSimulationButton->setEnabled(false);
+      this->stepNextGenerationButton->setEnabled(false);
+      this->closeGamefieldButton->setEnabled(false);
+      this->pauseSimulationButton->setEnabled(true);
+      this->gamefieldSizeXInput->setEnabled(false);
+      this->gamefieldSizeYInput->setEnabled(false);
+      this->gamefieldFillPercentageSlider->setEnabled(false);
+      break;
+    case GAME_STOPPED:
+      this->generateGamefieldButton->setEnabled(false);
+      this->startSimulationButton->setEnabled(true);
+      this->stepNextGenerationButton->setEnabled(true);
+      this->closeGamefieldButton->setEnabled(true);
+      this->pauseSimulationButton->setEnabled(true);
+      this->gamefieldSizeXInput->setEnabled(false);
+      this->gamefieldSizeYInput->setEnabled(false);
+      this->gamefieldFillPercentageSlider->setEnabled(false);
+      break;
+  } 
+}
+
 void Window::changeGameStateDisplay(gameState newState) {
   string stateString = "";
   switch (newState) {
@@ -89,7 +133,12 @@ void Window::changeGameStateDisplay(gameState newState) {
   case GAME_PREPARED:
     stateString = "PREPARED";
     break;
+  case GAME_GENERATING:
+    stateString = "GENERATING";
+    break;
   }
+
+  enableGamefieldControls(newState);
 
   statusLabel->setText(QString::fromStdString(stateString));
 };

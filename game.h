@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <string>
+#include <QtConcurrent>
 using namespace std;
 
 #include "gamefield.h"
@@ -22,12 +23,11 @@ class Game {
     void saveToFile(char*);
     gameState getCurrentState();
     void generateGameField(int sizeX, int sizeY, int fill);
-
+    void setState(gameState);
     void setWindow(Window*);
     void showControls();
 
   private:
-    void setState(gameState);
     gameState currentState;
     Window *controlWindow;
     Gamefield *gamefield;
