@@ -86,6 +86,12 @@ int Gamefield::getOffsetForCords(int x, int y) {
   return y * sizeY + x;
 }
 
+void Gamefield::applyNextGeneration() {
+  cellState *temp = currentGeneration; // just swap so we dont have to realloc
+  currentGeneration = nextGeneration;
+  nextGeneration = currentGeneration;
+}
+
 void Gamefield::setCellState(int x, int y, cellState state, generation targetGen = GENERATION_NEXT) {
   if (targetGen == GENERATION_CURRENT)
     *(currentGeneration + getOffsetForCords(x, y)) = state;
@@ -128,4 +134,55 @@ void Gamefield::setGameContainer(Game *game) {
 
 Game* Gamefield::getGameContainer() {
   return gameContainer;
+}
+
+int Gamefield::getSizeX() {
+  return this->sizeX;
+}
+
+int Gamefield::getSizeY() {
+  return this->sizeY;
+}
+
+void Gamefield::generateNextGeneration() {
+  for (int i = 0; i < this->sizeX; i++)
+    for (int j = 0; j < this->sizeY; j++) {
+      cellState newState = this->executeRulesOnCell(
+        this->getCellState(i, j, GENERATION_CURRENT),
+        this->getCellNeighbours(i, j)
+      );
+      this->setCellState(i, j, newState, GENERATION_NEXT);
+    }
+}
+
+int Gamefield::getCellNeighbours(int x, int y) {
+
+  cellState currVal = getCellState(x, y);
+
+  int neighbours = 0;
+  int newVal = currVal;
+
+  for (int k = x - 1; k <= x + 1; k++)
+  {
+    for (int l = y - 1; l <= y + 1; l++)
+    {
+      if ((k < 0 || k >= this->sizeX) ||
+          (l < 0 || l >= this->sizeY) ||
+          (k == x && l == y))
+        continue;
+      if (getCellState(k, l)) neighbours++;
+    }
+  }
+
+  return neighbours;
+}
+
+cellState Gamefield::executeRulesOnCell(cellState beforeState, int neighbours) {
+  if (beforeState == CELL_ALIVE && (neighbours < 2 || neighbours > 3))
+    return CELL_DEAD;
+  else if (beforeState == CELL_DEAD && neighbours == 3)
+    return CELL_ALIVE;
+
+  return beforeState;
+
 }

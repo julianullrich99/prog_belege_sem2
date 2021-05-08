@@ -4,15 +4,17 @@
 #include <stdlib.h>
 #include <string>
 #include <QtConcurrent>
+#include <QObject>
 using namespace std;
 
 #include "gamefield.h"
 #include "gamestate.h"
-
+#include "fieldwindow.h"
 #include "window.h"
 
 class Window;
 class Gamefield;
+class Fieldwindow;
 
 class Game {
   public:
@@ -25,13 +27,17 @@ class Game {
     void generateGameField(int sizeX, int sizeY, int fill);
     void setState(gameState);
     void setWindow(Window*);
+    Window* getWindow();
     void showControls();
+    void showFieldwindow();
+    void stepNextGeneration();
+    void clearFieldwindow();
 
   private:
     gameState currentState;
     Window *controlWindow;
     Gamefield *gamefield;
-
+    Fieldwindow *fieldwindow;
 
 };
 

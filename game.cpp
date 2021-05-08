@@ -14,6 +14,11 @@ Game::Game() {
   controlWindow->setGameContainer(this);
 
   gamefield = nullptr;
+  fieldwindow = nullptr;
+}
+
+Window* Game::getWindow() {
+  return this->controlWindow;
 }
 
 void Game::showControls() {
@@ -27,6 +32,8 @@ void Game::setState(gameState state) {
 }
 
 void Game::generateGameField(int sizeX, int sizeY, int fill) {
+  if (currentState != GAME_IDLE) return;
+
   Helper::log(
     "Generating gamefield with size: "
     + to_string(sizeX)
@@ -43,5 +50,30 @@ void Game::generateGameField(int sizeX, int sizeY, int fill) {
   gamefield->setGameContainer(this);
 
   this->setState(GAME_GENERATING);
-  QtConcurrent::run(gamefield, &Gamefield::populateGamefield, fill, GENERATION_CURRENT); //could take a while, set status and catch UI events inside
+
+  QFuture<void> fieldReady = QtConcurrent::run(gamefield, &Gamefield::populateGamefield, fill, GENERATION_CURRENT); //could take a while, set status and catch UI events inside
+  fieldReady.waitForFinished();
+
+  this->showFieldwindow();
+}
+
+void Game::stepNextGeneration() {
+  this->gamefield->generateNextGeneration();
+  this->gamefield->applyNextGeneration();
+  this->gamefield->printGamefieldToConsole(GENERATION_CURRENT);
+  this->fieldwindow->reRender();
+}
+
+void Game::showFieldwindow() {
+  Helper::log("Showing gamefield window");
+
+  if (currentState == GAME_IDLE || (this->fieldwindow && this->fieldwindow->isVisible())) return;
+
+  this->fieldwindow = new Fieldwindow(this->gamefield);
+  this->fieldwindow->show();
+  this->fieldwindow->setFocus();
+}
+
+void Game::clearFieldwindow() {
+  this->fieldwindow = NULL;
 }

@@ -26,6 +26,8 @@ private slots:
   void userEvent();
   void generateGameFieldEvent();
   void sliderChangedHandler();
+  void stepNextGenerationEvent();
+  void showGamefieldEvent();
 
 private:
   Game *gameContainer;
@@ -37,6 +39,7 @@ private:
   QPushButton *startSimulationButton;
   QPushButton *pauseSimulationButton;
   QPushButton *stepNextGenerationButton;
+  QPushButton *showGamefieldButton;
 
   QLabel *gamefieldSizeXLabel;
   QLabel *gamefieldSizeYLabel;
