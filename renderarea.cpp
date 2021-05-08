@@ -27,7 +27,9 @@ void Renderarea::paintEvent(QPaintEvent *event) {
       if (this->fieldwindow->getGamefieldContainer()->getCellState(i, j, GENERATION_CURRENT) == CELL_DEAD)
         cellColor.setRgb(255,0,0);
       painter.fillRect(i * 10, j * 10, 10, 10, cellColor);
+      // painter.drawText(i * 10, (j + 1) * 10, QString::fromStdString( // debug neigbour rendering
+      //   to_string(this->fieldwindow->getGamefieldContainer()->getCellNeighbours(i, j))
+      // ));
     }
   }
-
 }

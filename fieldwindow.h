@@ -27,6 +27,7 @@ class Fieldwindow : public QWidget {
     virtual ~Fieldwindow(){};
     Gamefield *getGamefieldContainer();
     void reRender();
+    string getTelemetryString();
 
   private slots:
 

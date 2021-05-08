@@ -26,7 +26,7 @@ Window::Window()
   showGamefieldButton = new QPushButton("show field");
 
   mainLayout->addWidget(generateGamefieldButton, 1, 2);
-  mainLayout->addWidget(showGamefieldButton, 2, 2);
+  // mainLayout->addWidget(showGamefieldButton, 2, 2);
   mainLayout->addWidget(closeGamefieldButton, 3, 2);
   mainLayout->addWidget(startSimulationButton, 4, 2);
   mainLayout->addWidget(pauseSimulationButton, 5, 2);
@@ -51,7 +51,7 @@ Window::Window()
 
   connect(generateGamefieldButton, &QPushButton::clicked, this, &Window::generateGameFieldEvent);
   connect(stepNextGenerationButton, &QPushButton::clicked, this, &Window::stepNextGenerationEvent);
-  connect(showGamefieldButton, &QPushButton::clicked, this, &Window::showGamefieldEvent);
+  // connect(showGamefieldButton, &QPushButton::clicked, this, &Window::showGamefieldEvent);
   connect(gamefieldFillPercentageSlider, &QSlider::valueChanged, this, &Window::sliderChangedHandler);
 
   setLayout(mainLayout);
@@ -94,7 +94,7 @@ void Window::enableGamefieldControls(gameState state)
   switch (state)
   {
   case GAME_PREPARED:
-    this->generateGamefieldButton->setEnabled(true);
+    this->generateGamefieldButton->setEnabled(false);
     this->startSimulationButton->setEnabled(true);
     this->stepNextGenerationButton->setEnabled(true);
     this->closeGamefieldButton->setEnabled(false);
@@ -102,6 +102,7 @@ void Window::enableGamefieldControls(gameState state)
     this->gamefieldSizeXInput->setEnabled(true);
     this->gamefieldSizeYInput->setEnabled(true);
     this->gamefieldFillPercentageSlider->setEnabled(true);
+    this->showGamefieldButton->setEnabled(true);
     break;
   case GAME_IDLE:
     this->generateGamefieldButton->setEnabled(true);
@@ -112,6 +113,7 @@ void Window::enableGamefieldControls(gameState state)
     this->gamefieldSizeXInput->setEnabled(true);
     this->gamefieldSizeYInput->setEnabled(true);
     this->gamefieldFillPercentageSlider->setEnabled(true);
+    this->showGamefieldButton->setEnabled(false);
     break;
   case GAME_RUNNING:
     this->generateGamefieldButton->setEnabled(false);
@@ -122,6 +124,7 @@ void Window::enableGamefieldControls(gameState state)
     this->gamefieldSizeXInput->setEnabled(false);
     this->gamefieldSizeYInput->setEnabled(false);
     this->gamefieldFillPercentageSlider->setEnabled(false);
+    this->showGamefieldButton->setEnabled(false);
     break;
   case GAME_STOPPED:
     this->generateGamefieldButton->setEnabled(false);
@@ -132,6 +135,7 @@ void Window::enableGamefieldControls(gameState state)
     this->gamefieldSizeXInput->setEnabled(false);
     this->gamefieldSizeYInput->setEnabled(false);
     this->gamefieldFillPercentageSlider->setEnabled(false);
+    this->showGamefieldButton->setEnabled(true);
     break;
   default:
     return;

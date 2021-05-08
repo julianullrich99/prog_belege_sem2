@@ -54,13 +54,14 @@ void Game::generateGameField(int sizeX, int sizeY, int fill) {
   QFuture<void> fieldReady = QtConcurrent::run(gamefield, &Gamefield::populateGamefield, fill, GENERATION_CURRENT); //could take a while, set status and catch UI events inside
   fieldReady.waitForFinished();
 
+  this->setState(GAME_PREPARED);
+
   this->showFieldwindow();
 }
 
 void Game::stepNextGeneration() {
   this->gamefield->generateNextGeneration();
   this->gamefield->applyNextGeneration();
-  this->gamefield->printGamefieldToConsole(GENERATION_CURRENT);
   this->fieldwindow->reRender();
 }
 

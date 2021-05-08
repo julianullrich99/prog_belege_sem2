@@ -66,8 +66,6 @@ void Gamefield::populateGamefield(int fill, generation target = GENERATION_NEXT)
     }
   }
 
-  this->getGameContainer()->setState(GAME_PREPARED);
-
   Helper::log("Done generating field");
 };
 
@@ -90,6 +88,7 @@ void Gamefield::applyNextGeneration() {
   cellState *temp = currentGeneration; // just swap so we dont have to realloc
   currentGeneration = nextGeneration;
   nextGeneration = currentGeneration;
+  currentGenerationNumber++;
 }
 
 void Gamefield::setCellState(int x, int y, cellState state, generation targetGen = GENERATION_NEXT) {
@@ -158,7 +157,6 @@ void Gamefield::generateNextGeneration() {
 int Gamefield::getCellNeighbours(int x, int y) {
 
   cellState currVal = getCellState(x, y);
-
   int neighbours = 0;
   int newVal = currVal;
 
@@ -170,7 +168,7 @@ int Gamefield::getCellNeighbours(int x, int y) {
           (l < 0 || l >= this->sizeY) ||
           (k == x && l == y))
         continue;
-      if (getCellState(k, l)) neighbours++;
+      if (getCellState(k, l) == CELL_ALIVE) neighbours++;
     }
   }
 
@@ -185,4 +183,13 @@ cellState Gamefield::executeRulesOnCell(cellState beforeState, int neighbours) {
 
   return beforeState;
 
+}
+
+int Gamefield::getCurrentlyAliveCells(generation target) {
+  int buf = 0;
+  for (int i = 0; i < this->sizeX; i++)
+    for (int j = 0; j < this->sizeY; j++)
+      if (this->getCellState(i, j, target) == CELL_ALIVE) buf++;
+
+  return buf;
 }

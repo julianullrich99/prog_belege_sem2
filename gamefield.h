@@ -29,6 +29,8 @@ class Gamefield {
     Game* getGameContainer();
     int getSizeX();
     int getSizeY();
+    int getCellNeighbours(int x, int y);
+    int getCurrentlyAliveCells(generation);
 
   private:
     cellState* currentGeneration = nullptr;
@@ -41,7 +43,6 @@ class Gamefield {
     int getOffsetForCords(int x, int y);
     cellState getCellStateByOffset(int offset, generation target);
     void setCellStateByOffset(int offset, cellState state, generation target);
-    int getCellNeighbours(int x, int y);
     cellState executeRulesOnCell(cellState beforeState, int neighbours);
 
 };

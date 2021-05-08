@@ -13,7 +13,7 @@ Fieldwindow::Fieldwindow(Gamefield *gamefieldContainer) {
 
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-  telemetryLabel = new QLabel("Generation 0, 42 Lebend");
+  telemetryLabel = new QLabel(QString::fromStdString(this->getTelemetryString()));
   mainLayout->addWidget(telemetryLabel);
 
   renderarea = new Renderarea(this, this);
@@ -26,7 +26,7 @@ Fieldwindow::Fieldwindow(Gamefield *gamefieldContainer) {
 
 void Fieldwindow::closeEvent(QCloseEvent *event) {
   Helper::log("Closed");
-  this->gamefieldContainer->getGameContainer()->setState(GAME_PREPARED);
+  this->gamefieldContainer->getGameContainer()->setState(GAME_IDLE);
   this->gamefieldContainer->getGameContainer()->clearFieldwindow();
 }
 
@@ -34,6 +34,14 @@ Gamefield* Fieldwindow::getGamefieldContainer() {
   return this->gamefieldContainer;
 }
 
+string Fieldwindow::getTelemetryString() {
+  return "Generation: " +
+  to_string(this->gamefieldContainer->getCurrentGenerationNumber()) +
+  ", Lebend: " +
+  to_string(this->gamefieldContainer->getCurrentlyAliveCells(GENERATION_CURRENT));
+}
+
 void Fieldwindow::reRender() {
+  telemetryLabel->setText(QString::fromStdString(this->getTelemetryString()));
   repaint();
 }
