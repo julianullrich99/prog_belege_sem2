@@ -24,7 +24,7 @@ Fieldwindow::Fieldwindow(Gamefield *gamefieldContainer) {
 
   setLayout(mainLayout);
 
-  setWindowTitle("Spiel des Lebens oder so");
+  setWindowTitle("Game of Life - Gamefield");
 }
 
 void Fieldwindow::closeEvent(QCloseEvent *event) {
@@ -41,7 +41,7 @@ Gamefield* Fieldwindow::getGamefieldContainer() {
 string Fieldwindow::getTelemetryString() {
   return "Generation: " +
   to_string(this->gamefieldContainer->getCurrentGenerationNumber()) +
-  ", Lebend: " +
+  ", Alive: " +
   to_string(this->gamefieldContainer->getCurrentlyAliveCells(GENERATION_CURRENT));
 }
 

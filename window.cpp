@@ -12,7 +12,7 @@ Window::Window() {
 
   QGridLayout *mainLayout = new QGridLayout;
 
-  QLabel *titleLabel = new QLabel("Spiel des Lebens");
+  QLabel *titleLabel = new QLabel("Game of Life");
   mainLayout->addWidget(titleLabel, 0, 0);
 
   statusLabel = new QLabel("");
@@ -75,7 +75,7 @@ Window::Window() {
   
   setLayout(mainLayout);
 
-  setWindowTitle("Spiel des Lebens oder so");
+  setWindowTitle("Game of Life - Julian Ullrich");
 };
 
 void Window::userEvent() {
