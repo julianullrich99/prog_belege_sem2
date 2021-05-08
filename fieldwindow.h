@@ -28,14 +28,20 @@ class Fieldwindow : public QWidget {
     Gamefield *getGamefieldContainer();
     void reRender();
     string getTelemetryString();
+    void enableEditGamefield(bool);
+    void handleFlipCell(int x, int y);
 
   private slots:
 
   private:
     Gamefield *gamefieldContainer;
     void closeEvent(QCloseEvent *);
+    void showEditHintLabel(bool);
+
+    QVBoxLayout *mainLayout;
 
     QLabel *telemetryLabel;
+    QLabel *editHintLabel;
     Renderarea *renderarea;
 
 };

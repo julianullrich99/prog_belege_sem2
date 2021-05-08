@@ -7,7 +7,8 @@ enum gameState {
   GAME_RUNNING, // running simulation
   GAME_STOPPED, // simulation stopped (via user or automatically)
   GAME_PREPARED, // startState loaded, ready to start
-  GAME_GENERATING
+  GAME_GENERATING,
+  GAME_EDITING
 };
 
 #endif

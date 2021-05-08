@@ -112,3 +112,13 @@ void Game::pauseSimulation() {
 Fieldwindow* Game::getFieldwindow() {
   return this->fieldwindow;
 }
+
+gameState Game::getCurrentState() {
+  return currentState;
+}
+
+void Game::enableEditGamefield(bool arg) {
+  if (arg) this->setState(GAME_EDITING);
+  else this->setState(GAME_PREPARED);
+  fieldwindow->enableEditGamefield(arg);
+}

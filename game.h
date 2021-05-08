@@ -36,6 +36,7 @@ class Game {
     void startSimulation();
     void pauseSimulation();
     Fieldwindow* getFieldwindow();
+    void enableEditGamefield(bool);
 
   private:
     gameState currentState;

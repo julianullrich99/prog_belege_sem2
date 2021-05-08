@@ -31,6 +31,7 @@ private slots:
   void startSimulationEvent();
   void pauseSimulationEvent();
   void closeGamefieldEvent();
+  void editGamefieldTriggerEvent();
 
 public slots:
   void handleTimerEvent();
@@ -45,7 +46,7 @@ private:
   QPushButton *startSimulationButton;
   QPushButton *pauseSimulationButton;
   QPushButton *stepNextGenerationButton;
-  QPushButton *showGamefieldButton;
+  QPushButton *editGamefieldButton;
 
   QLabel *gamefieldSizeXLabel;
   QLabel *gamefieldSizeYLabel;
@@ -59,6 +60,8 @@ private:
   QSlider *simulationSpeedSlider;
 
   void enableGamefieldControls(gameState);
+
+  bool editGameFieldEnabled;
 };
 
 #endif

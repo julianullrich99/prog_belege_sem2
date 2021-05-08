@@ -15,11 +15,14 @@ class Renderarea : public QWidget {
     Renderarea(QWidget *parent, Fieldwindow *);
     ~Renderarea() {};
     void paintEvent(QPaintEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void showEditGrid(bool);
 
   private:
     Fieldwindow *fieldwindow;
     int sizeX;
     int sizeY;
+    bool editingEnabled;
 };
 
 #endif
