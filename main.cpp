@@ -13,7 +13,7 @@ Helper *Helper::instance = 0;
 int main(int argc, char **argv)
 {
     Helper::enableLogging(true);
-    Helper::enableDebug(false);
+    Helper::enableDebug(true);
 
     QApplication app(argc, argv);
 

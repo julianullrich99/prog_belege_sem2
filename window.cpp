@@ -49,10 +49,22 @@ Window::Window()
   mainLayout->addWidget(gamefieldFillPercentageLabel, 3, 0);
   mainLayout->addWidget(gamefieldFillPercentageSlider, 3, 1);
 
+  simulationSpeedLabel = new QLabel("Speed: 100ms");
+  simulationSpeedSlider = new QSlider(Qt::Horizontal);
+  simulationSpeedSlider->setMaximum(1000);
+  simulationSpeedSlider->setMinimum(10);
+  simulationSpeedSlider->setSliderPosition(100);
+  mainLayout->addWidget(simulationSpeedLabel, 4, 0);
+  mainLayout->addWidget(simulationSpeedSlider, 4, 1);
+
   connect(generateGamefieldButton, &QPushButton::clicked, this, &Window::generateGameFieldEvent);
   connect(stepNextGenerationButton, &QPushButton::clicked, this, &Window::stepNextGenerationEvent);
   // connect(showGamefieldButton, &QPushButton::clicked, this, &Window::showGamefieldEvent);
   connect(gamefieldFillPercentageSlider, &QSlider::valueChanged, this, &Window::sliderChangedHandler);
+  connect(simulationSpeedSlider, &QSlider::valueChanged, this, &Window::simulationSpeedChangedHandler);
+  connect(startSimulationButton, &QPushButton::clicked, this, &Window::startSimulationEvent);
+  connect(pauseSimulationButton, &QPushButton::clicked, this, &Window::pauseSimulationEvent);
+  connect(closeGamefieldButton, &QPushButton::clicked, this, &Window::closeGamefieldEvent);
 
   setLayout(mainLayout);
 
@@ -82,11 +94,36 @@ void Window::showGamefieldEvent() {
   gameContainer->showFieldwindow();
 }
 
+void Window::startSimulationEvent() {
+  Helper::log("Starting Simulation");
+  gameContainer->startSimulation();
+}
+
+void Window::pauseSimulationEvent() {
+  Helper::log("Pausing Simulation");
+  gameContainer->pauseSimulation();
+}
+
+void Window::handleTimerEvent() { // workaround for handling timer events (slots) because they need QObject
+  gameContainer->handleTimerEvent();
+}
+
 void Window::sliderChangedHandler()
 {
   int value = gamefieldFillPercentageSlider->value();
   QString stringVal = QString::fromStdString("Fill: " + to_string(value) + "%");
   gamefieldFillPercentageLabel->setText(stringVal);
+}
+
+void Window::simulationSpeedChangedHandler() {
+  int timeMs = simulationSpeedSlider->value();
+  QString stringVal = QString::fromStdString("Speed: " + to_string(timeMs) + "ms");
+  simulationSpeedLabel->setText(stringVal);
+  gameContainer->setSimulationSpeed(timeMs);
+}
+
+void Window::closeGamefieldEvent() {
+  gameContainer->getFieldwindow()->close();
 }
 
 void Window::enableGamefieldControls(gameState state)
@@ -97,11 +134,11 @@ void Window::enableGamefieldControls(gameState state)
     this->generateGamefieldButton->setEnabled(false);
     this->startSimulationButton->setEnabled(true);
     this->stepNextGenerationButton->setEnabled(true);
-    this->closeGamefieldButton->setEnabled(false);
+    this->closeGamefieldButton->setEnabled(true);
     this->pauseSimulationButton->setEnabled(false);
-    this->gamefieldSizeXInput->setEnabled(true);
-    this->gamefieldSizeYInput->setEnabled(true);
-    this->gamefieldFillPercentageSlider->setEnabled(true);
+    this->gamefieldSizeXInput->setEnabled(false);
+    this->gamefieldSizeYInput->setEnabled(false);
+    this->gamefieldFillPercentageSlider->setEnabled(false);
     this->showGamefieldButton->setEnabled(true);
     break;
   case GAME_IDLE:
@@ -131,7 +168,7 @@ void Window::enableGamefieldControls(gameState state)
     this->startSimulationButton->setEnabled(true);
     this->stepNextGenerationButton->setEnabled(true);
     this->closeGamefieldButton->setEnabled(true);
-    this->pauseSimulationButton->setEnabled(true);
+    this->pauseSimulationButton->setEnabled(false);
     this->gamefieldSizeXInput->setEnabled(false);
     this->gamefieldSizeYInput->setEnabled(false);
     this->gamefieldFillPercentageSlider->setEnabled(false);

@@ -6,6 +6,8 @@
 #include <string>
 #include <iostream>
 
+#include <QObject>
+
 using namespace std;
 
 Game::Game() {
@@ -15,6 +17,7 @@ Game::Game() {
 
   gamefield = nullptr;
   fieldwindow = nullptr;
+  simulationTimer = nullptr;
 }
 
 Window* Game::getWindow() {
@@ -77,4 +80,35 @@ void Game::showFieldwindow() {
 
 void Game::clearFieldwindow() {
   this->fieldwindow = NULL;
+}
+
+void Game::handleTimerEvent() {
+  this->stepNextGeneration();
+}
+
+void Game::setSimulationSpeed(int time) {
+  this->simulationSpeed = time;
+  if (this->simulationTimer) {
+    if (currentState == GAME_RUNNING) // only need to stop if already running
+      simulationTimer->stop();
+  } else {
+    simulationTimer = new QTimer();
+    QObject::connect(simulationTimer, &QTimer::timeout, controlWindow, &Window::handleTimerEvent);
+  }
+  if (currentState == GAME_RUNNING)
+    simulationTimer->start(this->simulationSpeed);
+}
+
+void Game::startSimulation() {
+  this->setState(GAME_RUNNING);
+  this->setSimulationSpeed(this->simulationSpeed);
+}
+
+void Game::pauseSimulation() {
+  this->setState(GAME_STOPPED);
+  this->simulationTimer->stop();
+}
+
+Fieldwindow* Game::getFieldwindow() {
+  return this->fieldwindow;
 }

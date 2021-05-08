@@ -28,6 +28,13 @@ private slots:
   void sliderChangedHandler();
   void stepNextGenerationEvent();
   void showGamefieldEvent();
+  void simulationSpeedChangedHandler();
+  void startSimulationEvent();
+  void pauseSimulationEvent();
+  void closeGamefieldEvent();
+
+public slots:
+  void handleTimerEvent();
 
 private:
   Game *gameContainer;
@@ -48,6 +55,9 @@ private:
 
   QLabel *gamefieldFillPercentageLabel;
   QSlider *gamefieldFillPercentageSlider;
+
+  QLabel *simulationSpeedLabel;
+  QSlider *simulationSpeedSlider;
 
   void enableGamefieldControls(gameState);
 };

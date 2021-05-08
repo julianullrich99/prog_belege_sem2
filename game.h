@@ -15,12 +15,11 @@ using namespace std;
 class Window;
 class Gamefield;
 class Fieldwindow;
+class QTimer;
 
 class Game {
   public:
     Game();
-    void startSimulation();
-    void stopSimulation();
     void loadFromFile(char*);
     void saveToFile(char*);
     gameState getCurrentState();
@@ -32,12 +31,20 @@ class Game {
     void showFieldwindow();
     void stepNextGeneration();
     void clearFieldwindow();
+    void setSimulationSpeed(int time);
+    void handleTimerEvent();
+    void startSimulation();
+    void pauseSimulation();
+    Fieldwindow* getFieldwindow();
 
   private:
     gameState currentState;
     Window *controlWindow;
     Gamefield *gamefield;
     Fieldwindow *fieldwindow;
+
+    int simulationSpeed = 100;
+    QTimer *simulationTimer;
 
 };
 

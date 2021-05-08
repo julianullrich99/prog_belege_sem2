@@ -87,7 +87,7 @@ int Gamefield::getOffsetForCords(int x, int y) {
 void Gamefield::applyNextGeneration() {
   cellState *temp = currentGeneration; // just swap so we dont have to realloc
   currentGeneration = nextGeneration;
-  nextGeneration = currentGeneration;
+  nextGeneration = temp;
   currentGenerationNumber++;
 }
 
@@ -150,6 +150,7 @@ void Gamefield::generateNextGeneration() {
         this->getCellState(i, j, GENERATION_CURRENT),
         this->getCellNeighbours(i, j)
       );
+      Helper::debug(string("afterState: ") + ((newState == CELL_ALIVE) ? "alive" : "dead"));
       this->setCellState(i, j, newState, GENERATION_NEXT);
     }
 }
@@ -176,6 +177,7 @@ int Gamefield::getCellNeighbours(int x, int y) {
 }
 
 cellState Gamefield::executeRulesOnCell(cellState beforeState, int neighbours) {
+  Helper::debug(string("beforeState: ") + ((beforeState == CELL_ALIVE) ? "alive" : "dead") + " neighbours: " + to_string(neighbours));
   if (beforeState == CELL_ALIVE && (neighbours < 2 || neighbours > 3))
     return CELL_DEAD;
   else if (beforeState == CELL_DEAD && neighbours == 3)
