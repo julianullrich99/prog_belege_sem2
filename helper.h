@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string>
 #include <QWidget>
+#include "cellstate.h"
 
 using namespace std;
 
@@ -20,10 +21,14 @@ class Helper {
     static void log(string);
     static void log(QString);
     static void log(char*);
+    static void log(const char*);
     static void debug(string);
     static void debug(QString);
     static void debug(char*);
+    static void debug(const char*);
     static string toString(QString);
+
+    static string formatCellOutput(cellState);
 
 
   private:

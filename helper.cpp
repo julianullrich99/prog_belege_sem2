@@ -25,6 +25,10 @@ void Helper::log(char* data) {
   Helper::logString(data);
 };
 
+void Helper::log(const char* data) {
+  Helper::logString(data);
+};
+
 void Helper::log(QString data) {
   Helper::logString(Helper::toString(data));
 }
@@ -35,6 +39,11 @@ void Helper::debug(string data) {
 };
 
 void Helper::debug(char* data) {
+  if (Helper::isDebugEnabled())
+  Helper::logString(data);
+};
+
+void Helper::debug(const char* data) {
   if (Helper::isDebugEnabled())
   Helper::logString(data);
 };
@@ -57,9 +66,23 @@ bool Helper::isLoggingEnabled() {
 }
 
 void Helper::enableDebug(bool arg) {
-  Helper::getInstance()->loggingEnabled = arg;
+  Helper::getInstance()->debugEnabled = arg;
 }
 
 bool Helper::isDebugEnabled() {
   return Helper::getInstance()->debugEnabled;
+}
+
+string Helper::formatCellOutput(cellState state) {
+  switch (state) {
+    case CELL_ALIVE:
+      return "1";
+      break;
+    case CELL_DEAD:
+      return "0";
+      break;
+    case CELL_ERROR:
+      return "E";
+      break;
+  }
 }
