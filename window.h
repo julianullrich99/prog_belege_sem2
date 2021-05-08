@@ -11,8 +11,7 @@ class QLineEdit;
 class QSlider;
 class Game;
 
-class Window : public QWidget
-{
+class Window : public QWidget {
   Q_OBJECT
 
 public:

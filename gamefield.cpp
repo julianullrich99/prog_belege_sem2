@@ -161,10 +161,8 @@ int Gamefield::getCellNeighbours(int x, int y) {
   int neighbours = 0;
   int newVal = currVal;
 
-  for (int k = x - 1; k <= x + 1; k++)
-  {
-    for (int l = y - 1; l <= y + 1; l++)
-    {
+  for (int k = x - 1; k <= x + 1; k++) {
+    for (int l = y - 1; l <= y + 1; l++) {
       if ((k < 0 || k >= this->sizeX) ||
           (l < 0 || l >= this->sizeY) ||
           (k == x && l == y))

@@ -6,8 +6,7 @@
 
 #include <QtWidgets>
 
-Window::Window()
-{
+Window::Window() {
   gameContainer = 0;
 
   QGridLayout *mainLayout = new QGridLayout;
@@ -71,13 +70,11 @@ Window::Window()
   setWindowTitle("Spiel des Lebens oder so");
 };
 
-void Window::userEvent()
-{
+void Window::userEvent() {
   Helper::log("userEvent triggered");
 };
 
-void Window::generateGameFieldEvent()
-{
+void Window::generateGameFieldEvent() {
   gameContainer->generateGameField(
       stoi(Helper::toString(gamefieldSizeXInput->text())),
       stoi(Helper::toString(gamefieldSizeYInput->text())),
@@ -108,8 +105,7 @@ void Window::handleTimerEvent() { // workaround for handling timer events (slots
   gameContainer->handleTimerEvent();
 }
 
-void Window::sliderChangedHandler()
-{
+void Window::sliderChangedHandler() {
   int value = gamefieldFillPercentageSlider->value();
   QString stringVal = QString::fromStdString("Fill: " + to_string(value) + "%");
   gamefieldFillPercentageLabel->setText(stringVal);
@@ -126,10 +122,8 @@ void Window::closeGamefieldEvent() {
   gameContainer->getFieldwindow()->close();
 }
 
-void Window::enableGamefieldControls(gameState state)
-{
-  switch (state)
-  {
+void Window::enableGamefieldControls(gameState state) {
+  switch (state) {
   case GAME_PREPARED:
     this->generateGamefieldButton->setEnabled(false);
     this->startSimulationButton->setEnabled(true);
@@ -179,11 +173,9 @@ void Window::enableGamefieldControls(gameState state)
   }
 }
 
-void Window::changeGameStateDisplay(gameState newState)
-{
+void Window::changeGameStateDisplay(gameState newState) {
   string stateString = "";
-  switch (newState)
-  {
+  switch (newState) {
   case GAME_IDLE:
     stateString = "IDLE";
     break;
@@ -206,12 +198,10 @@ void Window::changeGameStateDisplay(gameState newState)
   statusLabel->setText(QString::fromStdString(stateString));
 };
 
-void Window::setGameContainer(Game *game)
-{
+void Window::setGameContainer(Game *game) {
   gameContainer = game;
 }
 
-Game *Window::getGameContainer()
-{
+Game *Window::getGameContainer() {
   return gameContainer;
 }
