@@ -19,7 +19,7 @@ Window::Window() {
   mainLayout->addWidget(statusLabel, 0, 2);
 
   generateGamefieldButton = new QPushButton("generate random");
-  closeGamefieldButton = new QPushButton("close gamefield");
+  closeGamefieldButton = new QPushButton("close simulation");
   startSimulationButton = new QPushButton("start simulation");
   pauseSimulationButton = new QPushButton("pause simulation");
   stepNextGenerationButton = new QPushButton("step simulation");
@@ -32,8 +32,8 @@ Window::Window() {
   mainLayout->addWidget(pauseSimulationButton, 5, 2);
   mainLayout->addWidget(stepNextGenerationButton, 6, 2);
 
-  gamefieldSizeXLabel = new QLabel("sizeX");
-  gamefieldSizeYLabel = new QLabel("sizeY");
+  gamefieldSizeXLabel = new QLabel("width");
+  gamefieldSizeYLabel = new QLabel("height");
   gamefieldSizeXInput = new QLineEdit("20");
   gamefieldSizeYInput = new QLineEdit("20");
   mainLayout->addWidget(gamefieldSizeXLabel, 1, 0);
@@ -57,6 +57,11 @@ Window::Window() {
   mainLayout->addWidget(simulationSpeedLabel, 4, 0);
   mainLayout->addWidget(simulationSpeedSlider, 4, 1);
 
+  loadFileButton = new QPushButton("load from file");
+  saveFileButton = new QPushButton("save to file");
+  mainLayout->addWidget(loadFileButton, 6, 0);
+  mainLayout->addWidget(saveFileButton, 6, 1);
+
   connect(generateGamefieldButton, &QPushButton::clicked, this, &Window::generateGameFieldEvent);
   connect(stepNextGenerationButton, &QPushButton::clicked, this, &Window::stepNextGenerationEvent);
   connect(gamefieldFillPercentageSlider, &QSlider::valueChanged, this, &Window::sliderChangedHandler);
@@ -65,7 +70,9 @@ Window::Window() {
   connect(pauseSimulationButton, &QPushButton::clicked, this, &Window::pauseSimulationEvent);
   connect(closeGamefieldButton, &QPushButton::clicked, this, &Window::closeGamefieldEvent);
   connect(editGamefieldButton, &QPushButton::clicked, this, &Window::editGamefieldTriggerEvent);
-
+  connect(loadFileButton, &QPushButton::clicked, this, &Window::loadFileEvent);
+  connect(saveFileButton, &QPushButton::clicked, this, &Window::saveFileEvent);
+  
   setLayout(mainLayout);
 
   setWindowTitle("Spiel des Lebens oder so");
@@ -110,6 +117,17 @@ void Window::editGamefieldTriggerEvent() {
   gameContainer->enableEditGamefield(this->editGameFieldEnabled);
 }
 
+void Window::loadFileEvent() {
+  Helper::log("Load file Event");
+  Helper::errorDialog("foobar");
+  gameContainer->loadFromFile();
+}
+
+void Window::saveFileEvent() {
+  Helper::log("Save file Event");
+  gameContainer->saveToFile();
+}
+
 void Window::handleTimerEvent() { // workaround for handling timer events (slots) because they need QObject
   gameContainer->handleTimerEvent();
 }
@@ -131,6 +149,12 @@ void Window::closeGamefieldEvent() {
   gameContainer->getFieldwindow()->close();
 }
 
+void Window::setInputLabelsAfterFileLoad(int height, int width, int fill) {
+  gamefieldFillPercentageSlider->setSliderPosition(fill);
+  gamefieldSizeYInput->setText(QString::fromStdString(to_string(width)));
+  gamefieldSizeXInput->setText(QString::fromStdString(to_string(height)));
+}
+
 void Window::enableGamefieldControls(gameState state) {
   switch (state) {
   case GAME_PREPARED:
@@ -143,6 +167,8 @@ void Window::enableGamefieldControls(gameState state) {
     this->gamefieldSizeYInput->setEnabled(false);
     this->gamefieldFillPercentageSlider->setEnabled(false);
     this->editGamefieldButton->setEnabled(true);
+    this->loadFileButton->setEnabled(false);
+    this->saveFileButton->setEnabled(true);
     break;
   case GAME_IDLE:
     this->generateGamefieldButton->setEnabled(true);
@@ -154,6 +180,8 @@ void Window::enableGamefieldControls(gameState state) {
     this->gamefieldSizeYInput->setEnabled(true);
     this->gamefieldFillPercentageSlider->setEnabled(true);
     this->editGamefieldButton->setEnabled(false);
+    this->loadFileButton->setEnabled(true);
+    this->saveFileButton->setEnabled(false);
     break;
   case GAME_RUNNING:
     this->generateGamefieldButton->setEnabled(false);
@@ -165,6 +193,8 @@ void Window::enableGamefieldControls(gameState state) {
     this->gamefieldSizeYInput->setEnabled(false);
     this->gamefieldFillPercentageSlider->setEnabled(false);
     this->editGamefieldButton->setEnabled(false);
+    this->loadFileButton->setEnabled(false);
+    this->saveFileButton->setEnabled(false);
     break;
   case GAME_STOPPED:
     this->generateGamefieldButton->setEnabled(false);
@@ -176,6 +206,8 @@ void Window::enableGamefieldControls(gameState state) {
     this->gamefieldSizeYInput->setEnabled(false);
     this->gamefieldFillPercentageSlider->setEnabled(false);
     this->editGamefieldButton->setEnabled(false);
+    this->loadFileButton->setEnabled(false);
+    this->saveFileButton->setEnabled(true);
     break;
   case GAME_EDITING:
     this->generateGamefieldButton->setEnabled(false);
@@ -187,6 +219,8 @@ void Window::enableGamefieldControls(gameState state) {
     this->gamefieldSizeYInput->setEnabled(false);
     this->gamefieldFillPercentageSlider->setEnabled(false);
     this->editGamefieldButton->setEnabled(true);
+    this->loadFileButton->setEnabled(false);
+    this->saveFileButton->setEnabled(false);
     break;
   default:
     return;

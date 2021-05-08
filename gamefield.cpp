@@ -70,10 +70,10 @@ void Gamefield::populateGamefield(int fill, generation target = GENERATION_NEXT)
 };
 
 void Gamefield::printGamefieldToConsole(generation target = GENERATION_CURRENT) {
-  for (int i = 0; i < sizeX; i++) {
+  for (int i = 0; i < sizeY; i++) {
     string line = "";
-    for (int j = 0; j < sizeY; j++)
-      line += Helper::formatCellOutput(getCellState(i, j, target));
+    for (int j = 0; j < sizeX; j++)
+      line += Helper::formatCellOutput(getCellState(j, i, target));
     Helper::log(line);
   }
 };
@@ -81,7 +81,7 @@ void Gamefield::printGamefieldToConsole(generation target = GENERATION_CURRENT) 
 int Gamefield::getOffsetForCords(int x, int y) {
   if (y >= sizeY || x >= sizeX) return 0;
 
-  return y * sizeY + x;
+  return y * sizeX + x;
 }
 
 void Gamefield::applyNextGeneration() {
@@ -185,11 +185,22 @@ cellState Gamefield::executeRulesOnCell(cellState beforeState, int neighbours) {
 
 }
 
-int Gamefield::getCurrentlyAliveCells(generation target) {
+int Gamefield::getCurrentlyAliveCells(generation target = GENERATION_CURRENT) {
   int buf = 0;
   for (int i = 0; i < this->sizeX; i++)
     for (int j = 0; j < this->sizeY; j++)
       if (this->getCellState(i, j, target) == CELL_ALIVE) buf++;
 
   return buf;
+}
+
+QString Gamefield::convertRowToStringForFile(int row, generation target = GENERATION_CURRENT) {
+  if (row >= sizeY) return "";
+
+  string buf = "";
+  for (int i = 0; i < sizeX; i++) {
+    buf += Helper::formatCellOutput(getCellState(i, row, target));
+  }
+
+  return QString::fromStdString(buf);
 }

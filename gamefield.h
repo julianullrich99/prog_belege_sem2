@@ -31,6 +31,7 @@ class Gamefield {
     int getSizeY();
     int getCellNeighbours(int x, int y);
     int getCurrentlyAliveCells(generation);
+    QString convertRowToStringForFile(int row, generation);
 
   private:
     cellState* currentGeneration = nullptr;

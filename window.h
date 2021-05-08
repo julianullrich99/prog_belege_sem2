@@ -20,6 +20,7 @@ public:
   void changeGameStateDisplay(gameState);
   void setGameContainer(Game *);
   Game *getGameContainer();
+  void setInputLabelsAfterFileLoad(int height, int width, int fill);
 
 private slots:
   void userEvent();
@@ -32,6 +33,8 @@ private slots:
   void pauseSimulationEvent();
   void closeGamefieldEvent();
   void editGamefieldTriggerEvent();
+  void loadFileEvent();
+  void saveFileEvent();
 
 public slots:
   void handleTimerEvent();
@@ -58,6 +61,9 @@ private:
 
   QLabel *simulationSpeedLabel;
   QSlider *simulationSpeedSlider;
+
+  QPushButton *loadFileButton;
+  QPushButton *saveFileButton;
 
   void enableGamefieldControls(gameState);
 

@@ -28,9 +28,10 @@ Fieldwindow::Fieldwindow(Gamefield *gamefieldContainer) {
 }
 
 void Fieldwindow::closeEvent(QCloseEvent *event) {
-  Helper::log("Closed");
-  this->gamefieldContainer->getGameContainer()->setState(GAME_IDLE);
+  Helper::log("Closed Fieldwindow");
+  this->gamefieldContainer->getGameContainer()->pauseSimulation();
   this->gamefieldContainer->getGameContainer()->clearFieldwindow();
+  this->gamefieldContainer->getGameContainer()->setState(GAME_IDLE);
 }
 
 Gamefield* Fieldwindow::getGamefieldContainer() {

@@ -86,3 +86,9 @@ string Helper::formatCellOutput(cellState state) {
       break;
   }
 }
+
+void Helper::errorDialog(string message) {
+  QErrorMessage error();
+  // error.showMessage(QString::fromStdString(message));
+  // error.showMessage(QString("foobar"));
+}

@@ -15,6 +15,8 @@ Game::Game() {
   controlWindow = new Window();
   controlWindow->setGameContainer(this);
 
+  fileservice = new Fileservice(this);
+
   gamefield = nullptr;
   fieldwindow = nullptr;
   simulationTimer = nullptr;
@@ -47,10 +49,7 @@ void Game::generateGameField(int sizeX, int sizeY, int fill) {
     + "%"
   );
 
-  if (gamefield) gamefield->deleteGamefield();
-
-  gamefield = new Gamefield(sizeX, sizeY);
-  gamefield->setGameContainer(this);
+  this->generateEmptyGamefield(sizeX, sizeY);
 
   this->setState(GAME_GENERATING);
 
@@ -60,6 +59,15 @@ void Game::generateGameField(int sizeX, int sizeY, int fill) {
   this->setState(GAME_PREPARED);
 
   this->showFieldwindow();
+}
+
+Gamefield* Game::generateEmptyGamefield(int sizeX, int sizeY) {
+  if (gamefield) gamefield->deleteGamefield();
+
+  gamefield = new Gamefield(sizeX, sizeY);
+  gamefield->setGameContainer(this);
+
+  return gamefield;
 }
 
 void Game::stepNextGeneration() {
@@ -106,7 +114,8 @@ void Game::startSimulation() {
 
 void Game::pauseSimulation() {
   this->setState(GAME_STOPPED);
-  this->simulationTimer->stop();
+  if (this->simulationTimer && this->simulationTimer->isActive())
+    this->simulationTimer->stop();
 }
 
 Fieldwindow* Game::getFieldwindow() {
@@ -121,4 +130,31 @@ void Game::enableEditGamefield(bool arg) {
   if (arg) this->setState(GAME_EDITING);
   else this->setState(GAME_PREPARED);
   fieldwindow->enableEditGamefield(arg);
+}
+
+void Game::loadFromFile() {
+  QString filename = fileservice->openFileSelector();
+  if (fileservice->fileExistsValid(filename)) {
+    Helper::log("File is valid, reading it now");
+    if (fileservice->readFileToGeneration(filename)) {
+      const int fill = gamefield->getCurrentlyAliveCells(GENERATION_CURRENT) * 100 / (gamefield->getSizeX() * gamefield->getSizeY());
+
+      controlWindow->setInputLabelsAfterFileLoad(gamefield->getSizeX(), gamefield->getSizeY(), fill);
+
+      this->setState(GAME_PREPARED);
+      this->showFieldwindow();
+    } else Helper::errorDialog("Error reading file.");
+  } else Helper::errorDialog("File is not valid.");
+}
+
+void Game::saveToFile() {
+  QString filename = fileservice->saveFileSelector();
+
+  if (filename.length()) {
+    if (!fileservice->writeGenerationToFile(filename)) Helper::errorDialog("Error saving file.");
+  } else Helper::errorDialog("No file selected.");
+}
+
+Gamefield* Game::getGamefield() {
+  return gamefield;
 }

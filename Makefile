@@ -58,7 +58,8 @@ SOURCES       = main.cpp \
 		game.cpp \
 		gamefield.cpp \
 		fieldwindow.cpp \
-		renderarea.cpp moc_window.cpp \
+		renderarea.cpp \
+		fileservice.cpp moc_window.cpp \
 		moc_fieldwindow.cpp \
 		moc_renderarea.cpp
 OBJECTS       = main.o \
@@ -68,6 +69,7 @@ OBJECTS       = main.o \
 		gamefield.o \
 		fieldwindow.o \
 		renderarea.o \
+		fileservice.o \
 		moc_window.o \
 		moc_fieldwindow.o \
 		moc_renderarea.o
@@ -295,13 +297,15 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		gamestate.h \
 		cellstate.h \
 		fieldwindow.h \
-		renderarea.h main.cpp \
+		renderarea.h \
+		fileservice.h main.cpp \
 		window.cpp \
 		helper.cpp \
 		game.cpp \
 		gamefield.cpp \
 		fieldwindow.cpp \
-		renderarea.cpp
+		renderarea.cpp \
+		fileservice.cpp
 QMAKE_TARGET  = main
 DESTDIR       = 
 TARGET        = main
@@ -765,8 +769,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents window.h helper.h game.h gamefield.h gamestate.h cellstate.h fieldwindow.h renderarea.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp window.cpp helper.cpp game.cpp gamefield.cpp fieldwindow.cpp renderarea.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents window.h helper.h game.h gamefield.h gamestate.h cellstate.h fieldwindow.h renderarea.h fileservice.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp window.cpp helper.cpp game.cpp gamefield.cpp fieldwindow.cpp renderarea.cpp fileservice.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -810,6 +814,7 @@ moc_window.cpp: window.h \
 		fieldwindow.h \
 		renderarea.h \
 		window.h \
+		fileservice.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /run/media/jukisu/Data/STUDIUM/SEM2/Progra/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/run/media/jukisu/Data/STUDIUM/SEM2/Progra -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtConcurrent -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include window.h -o moc_window.cpp
@@ -823,11 +828,21 @@ moc_fieldwindow.cpp: fieldwindow.h \
 		fieldwindow.h \
 		renderarea.h \
 		window.h \
+		fileservice.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /run/media/jukisu/Data/STUDIUM/SEM2/Progra/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/run/media/jukisu/Data/STUDIUM/SEM2/Progra -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtConcurrent -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include fieldwindow.h -o moc_fieldwindow.cpp
 
 moc_renderarea.cpp: renderarea.h \
+		cellstate.h \
+		fieldwindow.h \
+		gamefield.h \
+		helper.h \
+		gamestate.h \
+		game.h \
+		window.h \
+		fileservice.h \
+		renderarea.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /run/media/jukisu/Data/STUDIUM/SEM2/Progra/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/run/media/jukisu/Data/STUDIUM/SEM2/Progra -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtConcurrent -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include renderarea.h -o moc_renderarea.cpp
@@ -855,7 +870,8 @@ main.o: main.cpp helper.h \
 		gamestate.h \
 		fieldwindow.h \
 		renderarea.h \
-		window.h
+		window.h \
+		fileservice.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 window.o: window.cpp window.h \
@@ -865,7 +881,8 @@ window.o: window.cpp window.h \
 		helper.h \
 		cellstate.h \
 		fieldwindow.h \
-		renderarea.h
+		renderarea.h \
+		fileservice.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o window.o window.cpp
 
 helper.o: helper.cpp helper.h \
@@ -879,7 +896,8 @@ game.o: game.cpp game.h \
 		gamestate.h \
 		fieldwindow.h \
 		renderarea.h \
-		window.h
+		window.h \
+		fileservice.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o game.o game.cpp
 
 gamefield.o: gamefield.cpp gamefield.h \
@@ -889,7 +907,8 @@ gamefield.o: gamefield.cpp gamefield.h \
 		game.h \
 		fieldwindow.h \
 		renderarea.h \
-		window.h
+		window.h \
+		fileservice.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gamefield.o gamefield.cpp
 
 fieldwindow.o: fieldwindow.cpp fieldwindow.h \
@@ -899,11 +918,31 @@ fieldwindow.o: fieldwindow.cpp fieldwindow.h \
 		gamestate.h \
 		game.h \
 		window.h \
+		fileservice.h \
 		renderarea.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fieldwindow.o fieldwindow.cpp
 
-renderarea.o: renderarea.cpp renderarea.h
+renderarea.o: renderarea.cpp renderarea.h \
+		cellstate.h \
+		fieldwindow.h \
+		gamefield.h \
+		helper.h \
+		gamestate.h \
+		game.h \
+		window.h \
+		fileservice.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o renderarea.o renderarea.cpp
+
+fileservice.o: fileservice.cpp fileservice.h \
+		helper.h \
+		cellstate.h \
+		gamestate.h \
+		game.h \
+		gamefield.h \
+		fieldwindow.h \
+		renderarea.h \
+		window.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fileservice.o fileservice.cpp
 
 moc_window.o: moc_window.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_window.o moc_window.cpp
