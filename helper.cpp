@@ -80,6 +80,8 @@ string Helper::formatCellOutput(cellState state) {
     case CELL_ERROR:
       return "E";
       break;
+    default:
+      return "E";
   }
 }
 

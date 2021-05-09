@@ -151,7 +151,6 @@ int Gamefield::getCellNeighbours(int x, int y) {
 
   cellState currVal = getCellState(x, y);
   int neighbours = 0;
-  int newVal = currVal;
 
   for (int k = x - 1; k <= x + 1; k++) {
     for (int l = y - 1; l <= y + 1; l++) {
